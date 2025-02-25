@@ -265,7 +265,6 @@ class RedFlagsService:
     ############################ RF4 ############################
 
     def analyze_accounts_receivable_vs_sales(self, data, caution_threshold=0.15, red_flag_threshold=0.20, critical_threshold=0.30):
-        
         # Ensure necessary columns are present
         if 'netReceivables' not in data.columns or 'revenue' not in data.columns:
             return "Accounts Receivable analysis requires 'netReceivables' and 'revenue' columns."
@@ -306,7 +305,7 @@ class RedFlagsService:
                 arrow = "↑" if change > 0 else "↓"
                 caution_flags.append(f"FY {year}: Accounts Receivable to Sales = {self.format_percent(ratio * 100)}% ({arrow} {self.format_percent(abs(change) * 100)}%)")
             if caution_flags:
-                output.append(f"\nCaution Zone: Accounts Receivable to Sales between 15%-20%\n{'\n'.join(caution_flags)}")
+                output.append("\nCaution Zone: Accounts Receivable to Sales between 15%-20%\n" + "\n".join(caution_flags))
 
         # Red flag zone output
         if red_flag_years:
@@ -315,7 +314,7 @@ class RedFlagsService:
                 arrow = "↑" if change > 0 else "↓"
                 red_flags.append(f"FY {year}: Accounts Receivable to Sales = {self.format_percent(ratio * 100)}% ({arrow} {self.format_percent(abs(change) * 100)}%)")
             if red_flags:
-                output.append(f"\nRed Flag: Accounts Receivable to Sales between 20%-30%\n{'\n'.join(red_flags)}")
+                output.append("\nRed Flag: Accounts Receivable to Sales between 20%-30%\n" + "\n".join(red_flags))
 
         # Critical zone output
         if critical_years:
@@ -324,9 +323,9 @@ class RedFlagsService:
                 arrow = "↑" if change > 0 else "↓"
                 critical_flags.append(f"FY {year}: Accounts Receivable to Sales = {self.format_percent(ratio * 100)}% ({arrow} {self.format_percent(abs(change) * 100)}%)")
             if critical_flags:
-                output.append(f"\nCritical Zone: Accounts Receivable to Sales above 30%\n{'\n'.join(critical_flags)}")
+                output.append("\nCritical Zone: Accounts Receivable to Sales above 30%\n" + "\n".join(critical_flags))
 
-        return '\n'.join(output) if output else None
+        return "\n".join(output) if output else None
 
     ############################ RF5 ############################
 
@@ -365,7 +364,7 @@ class RedFlagsService:
             for year, change in zip(caution_years, caution_changes):
                 gross_profit_margin = data.loc[data['calendarYear'] == year, 'gross_profit_margin'].values[0]
                 caution_flags.append(f"FY {year}: Gross Profit Margin = {self.format_percent(gross_profit_margin * 100)}% (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nCaution Zone: Gross Profit Margin decreased between 10%-20%\n{'\n'.join(caution_flags)}")
+            output.append("\nCaution Zone: Gross Profit Margin decreased between 10%-20%\n" + "\n".join(caution_flags))
 
         # Red flag zone output
         if red_flag_years:
@@ -373,7 +372,7 @@ class RedFlagsService:
             for year, change in zip(red_flag_years, red_flag_changes):
                 gross_profit_margin = data.loc[data['calendarYear'] == year, 'gross_profit_margin'].values[0]
                 red_flags.append(f"FY {year}: Gross Profit Margin = {self.format_percent(gross_profit_margin * 100)}% (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nRed Flag: Gross Profit Margin decreased above 20%\n{'\n'.join(red_flags)}")
+            output.append("\nRed Flag: Gross Profit Margin decreased above 20%\n" + "\n".join(red_flags))
 
         # Critical zone output
         if critical_years:
@@ -381,7 +380,7 @@ class RedFlagsService:
             for year, change in zip(critical_years, critical_changes):
                 gross_profit_margin = data.loc[data['calendarYear'] == year, 'gross_profit_margin'].values[0]
                 critical_flags.append(f"FY {year}: Gross Profit Margin = {self.format_percent(gross_profit_margin * 100)}% (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nCritical Zone: Gross Profit Margin decreased above 30%\n{'\n'.join(critical_flags)}")
+            output.append("\nCritical Zone: Gross Profit Margin decreased above 30%\n" + "\n".join(critical_flags))
 
         # Flag years with persistently negative gross profit margins
         negative_margin_years = data.loc[data['gross_profit_margin'] < 0, 'calendarYear'].tolist()
@@ -429,7 +428,7 @@ class RedFlagsService:
             for year, change in zip(caution_years, caution_changes):
                 inventory_turnover = data.loc[data['calendarYear'] == year, 'inventory_turnover'].values[0]
                 caution_flags.append(f"FY {year}: Inventory Turnover = {inventory_turnover:.2f} (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nCaution Zone: Inventory Turnover decreased between 5%-10%\n{'\n'.join(caution_flags)}")
+            output.append("\nCaution Zone: Inventory Turnover decreased between 5%-10%\n" + "\n".join(caution_flags))
 
         # Red flag zone output
         if red_flag_years:
@@ -437,7 +436,7 @@ class RedFlagsService:
             for year, change in zip(red_flag_years, red_flag_changes):
                 inventory_turnover = data.loc[data['calendarYear'] == year, 'inventory_turnover'].values[0]
                 red_flags.append(f"FY {year}: Inventory Turnover = {inventory_turnover:.2f} (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nRed Flag: Inventory Turnover decreased above 10%\n{'\n'.join(red_flags)}")
+            output.append("\nRed Flag: Inventory Turnover decreased above 10%\n" + "\n".join(red_flags))
 
         # Critical zone output
         if critical_years:
@@ -445,7 +444,7 @@ class RedFlagsService:
             for year, change in zip(critical_years, critical_changes):
                 inventory_turnover = data.loc[data['calendarYear'] == year, 'inventory_turnover'].values[0]
                 critical_flags.append(f"FY {year}: Inventory Turnover = {inventory_turnover:.2f} (↓ {self.format_percent(abs(change) * 100)}%)")
-            output.append(f"\nCritical Zone: Inventory Turnover decreased above 20%\n{'\n'.join(critical_flags)}")
+            output.append("\nCritical Zone: Inventory Turnover decreased above 20%\n" + "\n".join(critical_flags))
 
         return '\n'.join(output) if output else None
 
@@ -475,7 +474,7 @@ class RedFlagsService:
             for year, change in zip(caution_years, caution_changes):
                 goodwill = data.loc[data['calendarYear'] == year, 'goodwill'].values[0]
                 caution_flags.append(f"FY {year}: Goodwill = {self.format_number(goodwill)} (↑ {self.format_percent(change * 100)}%)")
-            output.append(f"\n\nCaution Zone: Goodwill increased between 10%-20%\n{'\n'.join(caution_flags)}")
+            output.append("\n\nCaution Zone: Goodwill increased between 10%-20%\n" + "\n".join(caution_flags))
 
         # Red flag zone output
         if red_flag_years:
@@ -483,7 +482,7 @@ class RedFlagsService:
             for year, change in zip(red_flag_years, red_flag_changes):
                 goodwill = data.loc[data['calendarYear'] == year, 'goodwill'].values[0]
                 red_flags.append(f"FY {year}: Goodwill = {self.format_number(goodwill)} (↑ {self.format_percent(change * 100)}%)")
-            output.append(f"\n\nRed Flag: Goodwill increased above 20%\n{'\n'.join(red_flags)}")
+            output.append("\n\nRed Flag: Goodwill increased above 20%\n" + "\n".join(red_flags))
 
         # If there are caution or red flags, add the warning text
         if output:
@@ -757,7 +756,7 @@ class RedFlagsService:
             for year, change in zip(caution_years, caution_changes):
                 shortTermDebt = data.loc[data['calendarYear'] == year, 'shortTermDebt'].values[0]
                 caution_flags.append(f"FY {year}: Short-Term Debt = {self.format_number(shortTermDebt)} (↑ {self.format_percent(change * 100)}%)")
-            output.append(f"\nCaution Zone: Short-Term Debt increased between 15%-30%\n{'\n'.join(caution_flags)}")
+            output.append("\nCaution Zone: Short-Term Debt increased between 15%-30%\n" + "\n".join(caution_flags))
 
         # Red flag zone output
         if red_flag_years:
@@ -765,10 +764,10 @@ class RedFlagsService:
             for year, change in zip(red_flag_years, red_flag_changes):
                 shortTermDebt = data.loc[data['calendarYear'] == year, 'shortTermDebt'].values[0]
                 red_flags.append(f"FY {year}: Short-Term Debt = {self.format_number(shortTermDebt)} (↑ {self.format_percent(change * 100)}%)")
-            output.append(f"\nRed Flag: Short-Term Debt increased above 30%\n{'\n'.join(red_flags)}")
+            output.append("\nRed Flag: Short-Term Debt increased above 30%\n" + "\n".join(red_flags))
 
         # Combine warning text with output
         if output:
-            return f"{warning_text}{'\n'.join(output)}"
+            return warning_text + "\n".join(output)
         
         return None

@@ -40,14 +40,6 @@ def get_balance_sheet_db(ticker):
     return jsonify({"balanceSheet": balance_sheet_data}), 200
 
 
-
-
-
-
-
-
-
-
 @financial_bp.route('/redflags/<ticker>', methods=['GET'])
 def get_redflags(ticker):
     redflags_data = redflags_service.analyze_red_flags(ticker)
@@ -64,7 +56,6 @@ def get_financial_data_as_dataframe(ticker):
     
     # Return JSON response
     return jsonify(json_data)
-
 
 
 @financial_bp.route('/positiveindicators/<ticker>', methods=['GET'])
